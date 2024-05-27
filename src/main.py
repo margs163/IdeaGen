@@ -1,10 +1,8 @@
 import streamlit as st
 import time
-from generation import generate_project
-from generation import generate_chatbot_response
-is_generated = False
+from chains import generate_project
+from chains import generate_chatbot_response
 ai_value = dict
-counter = 0
 
 st.markdown("<h1 style='text-align: center;'> &#128526 Project Ideas Generator</h1>", unsafe_allow_html=True)
 
@@ -18,6 +16,7 @@ st.divider()
 st.markdown("**To start generating ideas, fill in the textboxes key features of your project and click on :blue[Generate] button.**")
 st.caption("This was created by the G.O.A.T :goat: himself - Daniyal :joy:. The purpose of this webapp is to help students with science investigatory projects.")
 
+# typewriting stream function
 def stream_data(string: str):
     for word in string.split(" "):
         yield word + " "
@@ -26,8 +25,6 @@ def stream_data(string: str):
 if 'generation_counts' not in st.session_state:
     st.session_state.generation_counts = 0
 
-if 'messages_sent_count' not in st.session_state:
-    st.session_state.messages_sent_count = 0
 
 if 'clicked' not in st.session_state:
     st.session_state.clicked = False
@@ -42,12 +39,14 @@ if 'projects' not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Generating project info when button is pressed
 if st.sidebar.button("Generate"):
     st.session_state.clicked = True
     ai_value = generate_project(subject, field)
     st.session_state.projects.append(ai_value)
     st.session_state.generation_counts += 1
 
+# Showing the UI
 if st.session_state.clicked:
     st.divider()
     st.markdown("<h4 style='text-align: center;'> Generated project &#129302:</h4>", unsafe_allow_html=True)
@@ -58,22 +57,20 @@ if st.session_state.clicked:
     st.divider()
     is_generated = True
     
-    messages = st.container(height=200)
-    user_message = st.container(height=70)
-    prompt = user_message.chat_input("What's up?")
-    
-
+    # Chat window
+    message_window = st.container(height=200)
+    user_message_window = st.container(height=70)
+    prompt = user_message_window.chat_input("What's up?")
     if prompt:
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.session_state.messages.append({"role": "AI", "content": generate_chatbot_response(prompt, text_idea)['text']})
 
         for index, message in enumerate(st.session_state.messages):
                 if index == len(st.session_state.messages)-1:
-                    messages.chat_message(message["role"]).write_stream(stream_data(message["content"]))
+                    message_window.chat_message(message["role"]).write_stream(stream_data(message["content"]))
                 else:
-                    messages.chat_message(message["role"]).markdown(message["content"])
-    
+                    message_window.chat_message(message["role"]).markdown(message["content"])
 
     else:
-        messages.markdown("<h4 style='text-align: center;'>Do you have any quesitons about the project idea &#129300? </h4>", unsafe_allow_html=True)
-        messages.markdown("<h4 style='text-align: center;'>You can chat with the AI chatbot. </h4>", unsafe_allow_html=True)
+        message_window.markdown("<h4 style='text-align: center;'>Do you have any quesitons about the project idea &#129300? </h4>", unsafe_allow_html=True)
+        message_window.markdown("<h4 style='text-align: center;'>You can chat with the AI chatbot. </h4>", unsafe_allow_html=True)

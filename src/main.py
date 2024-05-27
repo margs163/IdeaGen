@@ -6,7 +6,7 @@ ai_value = dict
 
 st.markdown("<h1 style='text-align: center;'> &#128526 Project Ideas Generator</h1>", unsafe_allow_html=True)
 
-st.markdown("<h5 style='text-align: center;'> Find unique ideas for you science investigatory projects</h1>", unsafe_allow_html=True)
+st.markdown("<h5 style='text-align: center;'> Find unique ideas for your science investigatory projects</h1>", unsafe_allow_html=True)
 
 
 st.sidebar.header("**PROJECT INFORMATION**", divider='rainbow')

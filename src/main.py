@@ -3,12 +3,14 @@ import time
 from chains import generate_project
 from chains import generate_chatbot_response
 ai_value = dict
+ideagen_logo_large = 'src/images/logo4.png'
+ideagen_logo_small = 'src/images/logo-app2.png'
 
 st.markdown("<h1 style='text-align: center;'> &#128526 Project Ideas Generator</h1>", unsafe_allow_html=True)
-
 st.markdown("<h5 style='text-align: center;'> Find unique ideas for your science investigatory projects</h1>", unsafe_allow_html=True)
 
 
+st.sidebar.image(ideagen_logo_large, width=190)
 st.sidebar.header("**PROJECT INFORMATION**", divider='rainbow')
 subject = st.sidebar.text_input("Name a subject of the project:")
 field = st.sidebar.text_input("Name a field of the project:")
@@ -74,3 +76,11 @@ if st.session_state.clicked:
     else:
         message_window.markdown("<h4 style='text-align: center;'>Do you have any quesitons about the project idea &#129300? </h4>", unsafe_allow_html=True)
         message_window.markdown("<h4 style='text-align: center;'>You can chat with the AI chatbot. </h4>", unsafe_allow_html=True)
+
+else: 
+    st.divider()
+    st.markdown("<h4 style='text-align: center;'>Quick tutorial on how to start generating ideas:</h4>", unsafe_allow_html=True)
+    with st.expander("See tutorial"):
+        st.video('src/videos/ideagen.mp4')
+
+
